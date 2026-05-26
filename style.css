@@ -106,6 +106,24 @@ h1 {
   padding: 18px;
 }
 
+.partners-notice {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 14px;
+  padding: 13px 14px;
+  border: 1px solid rgba(255, 90, 138, 0.22);
+  border-radius: 18px;
+  background: #fff5e3;
+  color: #4b5261;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.partners-notice strong {
+  color: #d53d68;
+  font-weight: 1000;
+}
+
 .draw-form {
   display: grid;
   gap: 10px;
@@ -605,8 +623,15 @@ h1 {
   }
 
   .main-panel {
-    padding: 14px;
+    padding: 12px;
     border-radius: 22px;
+  }
+
+  .partners-notice {
+    margin-bottom: 10px;
+    padding: 10px 11px;
+    border-radius: 15px;
+    font-size: 0.8rem;
   }
 
   .quick-buttons {
@@ -614,46 +639,54 @@ h1 {
   }
 
   .product-body {
-    gap: 10px;
-    padding: 14px;
+    gap: 8px;
+    padding: 12px;
   }
 
   .product-visual {
-    min-height: 136px;
+    min-height: 104px;
   }
 
   .product-emoji {
-    font-size: 4.2rem;
+    font-size: 3.6rem;
   }
 
   .product-img {
-    max-height: 128px;
+    max-height: 104px;
   }
 
   .product-title {
-    font-size: 1.35rem;
+    font-size: 1.22rem;
   }
 
   .price {
-    font-size: 1.28rem;
+    font-size: 1.18rem;
   }
 
   .comment-box,
   .disclosure {
-    padding: 10px;
-    border-radius: 14px;
-    font-size: 0.84rem;
+    padding: 9px 10px;
+    border-radius: 13px;
+    font-size: 0.8rem;
   }
 
   .score-row {
-    gap: 6px;
+    gap: 5px;
+  }
+
+  .score-label {
+    font-size: 0.82rem;
+  }
+
+  .score-track {
+    height: 9px;
   }
 
   .coupang-link,
   .primary-btn,
   .secondary-btn,
   .ghost-btn {
-    min-height: 44px;
+    min-height: 40px;
   }
 
   .empty-state {
