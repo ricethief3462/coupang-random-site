@@ -313,6 +313,7 @@ function drawProduct() {
     currentProduct = null;
     showStatus("이 금액으로는 추천할 상품이 없어요. 예산을 조금만 올려볼까요?");
     renderEmpty("😢", "후보가 없어요", `${money(budget)}원 이하 더미 상품을 아직 준비하지 못했어요.`);
+    focusResultOnMobile();
     return;
   }
 
@@ -322,10 +323,19 @@ function drawProduct() {
   showStatus(`${money(budget)}원 이하에서 하나 뽑았습니다. 이건 좀 탐나는데?`);
   renderProduct(product);
   renderLists();
+  focusResultOnMobile();
 }
 
 function showStatus(message) {
   elements.statusMessage.textContent = message;
+}
+
+function focusResultOnMobile() {
+  if (!window.matchMedia("(max-width: 720px)").matches) return;
+
+  window.requestAnimationFrame(() => {
+    elements.productCard.scrollIntoView({ block: "start", behavior: "smooth" });
+  });
 }
 
 function renderEmpty(icon, title, copy) {
