@@ -1,9 +1,13 @@
 /*
   관리자용 상품 교체 가이드
-  1. 아래 REAL_PRODUCTS 배열의 affiliateUrl에 실제 쿠팡 파트너스 링크를 붙여넣으세요.
-  2. 실제 파트너스 링크를 넣은 상품은 isRealAffiliateLink 값을 true로 바꾸세요.
-  3. 아직 임시 링크이거나 링크가 비어 있는 상품은 isRealAffiliateLink: false 상태로 두세요.
-  4. image 필드는 지금 이모지 플레이스홀더를 쓰지만, 나중에 실제 쿠팡 상품 이미지 URL 문자열로 교체할 수 있습니다.
+  실제 쿠팡 파트너스 상품을 넣는 위치는 바로 아래 REAL_PRODUCTS 배열입니다.
+
+  교체 순서:
+  1. name, category, price, priceText, image 값을 실제 상품 정보로 바꿉니다.
+  2. affiliateUrl에 실제 쿠팡 파트너스 링크를 붙여넣습니다.
+  3. isRealAffiliateLink 값을 true로 바꾸면 "쿠팡에서 보기" 버튼이 활성화됩니다.
+  4. 아직 실제 링크가 없으면 affiliateUrl은 PASTE_COUPANG_PARTNERS_LINK_HERE,
+     isRealAffiliateLink는 false로 둡니다.
   5. 쿠팡 Open API 키, Secret Key, Access Key 같은 비밀 값은 절대 프론트엔드 코드에 넣지 마세요.
 */
 
@@ -13,6 +17,11 @@ const STORAGE_KEYS = {
   liked: "randomCoupang_likedIds"
 };
 
+// ============================================================
+// REAL_PRODUCTS: 실제 쿠팡 파트너스 링크 상품 입력 영역
+// - 실제 링크가 있고 isRealAffiliateLink가 true인 상품은 더미 상품보다 우선 추천됩니다.
+// - 심사 전에는 아래 3개 예시 중 하나에 실제 링크를 넣어 버튼 활성 상태를 확인하세요.
+// ============================================================
 const REAL_PRODUCTS = [
   {
     id: 10001,
@@ -237,7 +246,7 @@ function getProductBadges(product) {
   const badges = [product.category, `충동구매 ${product.impulseScore}점`];
 
   if (isSampleProduct(product)) {
-    badges.push("샘플 상품 / 링크 준비중");
+    badges.push("샘플 / 링크 준비중");
   } else if (!isAffiliateLinkReady(product)) {
     badges.push("실제 링크 입력 대기");
   }
