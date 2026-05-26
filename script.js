@@ -25,15 +25,15 @@ const STORAGE_KEYS = {
 const REAL_PRODUCTS = [
   {
     id: 10001,
-    name: "실제 링크 테스트 상품 1",
-    category: "파트너스 테스트",
-    price: 12900,
-    priceText: "12,900원",
-    image: "🛍️",
-    affiliateUrl: "PASTE_COUPANG_PARTNERS_LINK_HERE",
-    isRealAffiliateLink: false,
-    comment: "실제 쿠팡 파트너스 링크를 붙여넣고 true로 바꾸면 우선 추천됩니다.",
-    impulseScore: 80
+    name: "쿠팡 랜덤 추천템",
+    category: "생활템",
+    price: 30000,
+    priceText: "30,000원 이하",
+    image: "",
+    affiliateUrl: "https://link.coupang.com/a/d397AWV7w4",
+    isRealAffiliateLink: true,
+    comment: "금액 안에서 가볍게 뽑아보기 좋은 랜덤 추천템입니다.",
+    impulseScore: 82
   },
   {
     id: 10002,
