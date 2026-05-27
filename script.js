@@ -1,14 +1,25 @@
 /*
   관리자용 상품 교체 가이드
-  실제 쿠팡 파트너스 상품을 넣는 위치는 바로 아래 REAL_PRODUCTS 배열입니다.
+  실제 쿠팡 파트너스 상품을 넣는 위치는 아래 REAL_PRODUCTS 배열입니다.
 
-  교체 순서:
-  1. name, category, price, priceText, image 값을 실제 상품 정보로 바꿉니다.
-  2. affiliateUrl에 실제 쿠팡 파트너스 링크를 붙여넣습니다.
-  3. isRealAffiliateLink 값을 true로 바꾸면 "쿠팡에서 보기" 버튼이 활성화됩니다.
-  4. 아직 실제 링크가 없으면 affiliateUrl은 PASTE_COUPANG_PARTNERS_LINK_HERE,
-     isRealAffiliateLink는 false로 둡니다.
-  5. 쿠팡 Open API 키, Secret Key, Access Key 같은 비밀 값은 절대 프론트엔드 코드에 넣지 마세요.
+  여러 개를 추가할 때는 REAL_PRODUCTS 배열에 아래 형식의 객체를 복사해서 붙여넣으세요.
+  {
+    id: 10004, // 기존 id와 겹치지 않게 증가
+    name: "실제 쿠팡 상품명",
+    category: "생활템",
+    price: 30000, // 추천 필터용 숫자. 정확하지 않으면 예산 상한값으로 입력
+    priceText: "쿠팡 페이지에서 확인", // 확정 가격을 모르면 이 문구 사용
+    image: "https://...", // 이미지 URL이 없으면 빈 문자열
+    affiliateUrl: "https://link.coupang.com/a/...",
+    isRealAffiliateLink: true,
+    comment: "랜덤 추천 카드에 보일 짧은 멘트",
+    impulseScore: 82
+  }
+
+  주의:
+  - isRealAffiliateLink가 true이고 임시 링크가 아닌 상품만 "쿠팡에서 보기"가 활성화됩니다.
+  - 쿠팡 Open API 키, Secret Key, Access Key 같은 비밀 값은 절대 프론트엔드 코드에 넣지 마세요.
+  - API 자동화는 나중에 서버에서 처리하고, GitHub Pages에는 비밀 값을 올리지 마세요.
 */
 
 const PARTNERS_DISCLOSURE = "이 사이트는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.";
@@ -20,11 +31,10 @@ const STORAGE_KEYS = {
 // ============================================================
 // REAL_PRODUCTS: 실제 쿠팡 파트너스 링크 상품 입력 영역
 // - 실제 링크가 있고 isRealAffiliateLink가 true인 상품은 더미 상품보다 우선 추천됩니다.
-// - 심사 전에는 아래 3개 예시 중 하나에 실제 링크를 넣어 버튼 활성 상태를 확인하세요.
+// - 상품이 여러 개면 입력 금액 이하의 실제 링크 상품 중에서 랜덤 추천됩니다.
 // - 첫 번째 상품의 name은 실제 쿠팡 상품명을 받으면 그대로 교체하세요.
 //   예: name: "브랜드명 상품명 옵션명"
-// - priceText는 확정 판매가가 아니어도 됩니다. 예산 기반 추천이면 "30,000원 이하"처럼
-//   가격대로 적고, 실제 최종 가격은 쿠팡 페이지에서 확인하도록 안내합니다.
+// - 정확한 가격을 모르면 priceText: "쿠팡 페이지에서 확인"처럼 적어도 됩니다.
 // ============================================================
 const REAL_PRODUCTS = [
   {
@@ -65,8 +75,8 @@ const REAL_PRODUCTS = [
   }
 ];
 
-// Sample product data: 실제 링크가 없을 때 보여주는 더미 추천 풀입니다.
-const products = [
+// SAMPLE_PRODUCTS: 실제 링크 상품이 없거나 부족할 때 보여주는 정적 더미 추천 풀입니다.
+const SAMPLE_PRODUCTS = [
   { id: 1, name: "접이식 미니 빨래바구니", category: "자취템", price: 7900, priceText: "7,900원", image: "🧺", affiliateUrl: "https://www.coupang.com/placeholder/1?tag=replace-me", isRealAffiliateLink: false, comment: "방 한쪽이 갑자기 어른의 공간처럼 보이는 마법.", impulseScore: 73 },
   { id: 2, name: "침대 옆 컵홀더 트레이", category: "자취템", price: 12900, priceText: "12,900원", image: "🥤", affiliateUrl: "https://www.coupang.com/placeholder/2?tag=replace-me", isRealAffiliateLink: false, comment: "눕자마자 물컵 찾는 사람을 위한 작은 복지.", impulseScore: 82 },
   { id: 3, name: "무타공 멀티탭 정리함", category: "자취템", price: 15900, priceText: "15,900원", image: "🔌", affiliateUrl: "https://www.coupang.com/placeholder/3?tag=replace-me", isRealAffiliateLink: false, comment: "선이 사라지면 마음의 주름도 살짝 펴집니다.", impulseScore: 68 },
@@ -227,7 +237,7 @@ function saveIds(key, ids) {
 }
 
 function findProduct(id) {
-  return [...REAL_PRODUCTS, ...products].find((product) => product.id === id);
+  return [...REAL_PRODUCTS, ...SAMPLE_PRODUCTS].find((product) => product.id === id);
 }
 
 function money(value) {
@@ -243,7 +253,7 @@ function isAffiliateLinkReady(product) {
 }
 
 function isSampleProduct(product) {
-  return products.some((sampleProduct) => sampleProduct.id === product.id);
+  return SAMPLE_PRODUCTS.some((sampleProduct) => sampleProduct.id === product.id);
 }
 
 function getProductBadges(product) {
@@ -275,7 +285,7 @@ function renderMiniImage(product, gradient) {
     return `<img class="mini-img" src="${product.image}" alt="">`;
   }
 
-  return `<div class="mini-thumb" style="background: ${gradient}">${product.image}</div>`;
+  return `<div class="mini-thumb" style="background: ${gradient}">${product.image || "🛒"}</div>`;
 }
 
 function renderAffiliateAction(product, className = "coupang-link") {
@@ -293,15 +303,39 @@ function renderAffiliateAction(product, className = "coupang-link") {
   `;
 }
 
+async function fetchRandomProductFromApi(maxPrice) {
+  /*
+    향후 쿠팡 파트너스 API 서버를 붙일 자리입니다.
+
+    예시:
+    const response = await fetch(`/api/random-product?maxPrice=${encodeURIComponent(maxPrice)}`);
+    if (!response.ok) return null;
+    return response.json();
+
+    현재 GitHub Pages 정적 MVP에서는 API를 호출하지 않습니다.
+    Access Key, Secret Key는 반드시 서버에만 보관하세요.
+  */
+  return null;
+}
+
+function getRandomItem(candidates) {
+  if (candidates.length === 0) return null;
+  return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
+function getAvailableCandidates(sourceProducts, budget) {
+  return sourceProducts.filter((product) => product.price <= budget);
+}
+
 function pickRandomProduct(budget) {
-  const realCandidates = REAL_PRODUCTS.filter((product) => product.price <= budget && isAffiliateLinkReady(product));
-  const sampleCandidates = products.filter((product) => product.price <= budget);
+  const realCandidates = getAvailableCandidates(REAL_PRODUCTS, budget).filter(isAffiliateLinkReady);
+  const sampleCandidates = getAvailableCandidates(SAMPLE_PRODUCTS, budget);
   const candidates = realCandidates.length > 0 ? realCandidates : sampleCandidates;
 
   if (candidates.length === 0) return null;
   const cooledCandidates = candidates.filter((product) => !recentIds.includes(product.id));
   const pool = cooledCandidates.length > 0 ? cooledCandidates : candidates;
-  return pool[Math.floor(Math.random() * pool.length)];
+  return getRandomItem(pool);
 }
 
 function drawProduct() {
