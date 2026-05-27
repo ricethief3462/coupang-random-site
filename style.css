@@ -94,7 +94,8 @@ h1 {
 }
 
 .main-panel,
-.side-section {
+.side-section,
+.banner-section {
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.78);
@@ -542,6 +543,63 @@ h1 {
   padding: 0 4px 4px;
 }
 
+.banner-section {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 22px 18px;
+  text-align: center;
+}
+
+.banner-copy {
+  display: grid;
+  gap: 8px;
+  max-width: 520px;
+}
+
+.banner-copy h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.28rem;
+  line-height: 1.25;
+}
+
+.banner-copy p,
+.banner-disclosure {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.banner-frame {
+  display: grid;
+  place-items: center;
+  width: min(100%, 180px);
+  min-height: 280px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.68), 0 12px 24px rgba(31, 36, 48, 0.08);
+  overflow: hidden;
+}
+
+.banner-frame iframe {
+  display: block;
+  max-width: 100%;
+}
+
+.banner-disclosure {
+  max-width: 620px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #fff5e3;
+  color: #d53d68;
+  font-weight: 1000;
+}
+
 .site-footer {
   margin-top: 20px;
   display: grid;
@@ -652,6 +710,27 @@ h1 {
     padding: 10px 11px;
     border-radius: 15px;
     font-size: 0.8rem;
+  }
+
+  .banner-section {
+    gap: 12px;
+    margin-top: 16px;
+    padding: 16px 12px;
+    border-radius: 22px;
+  }
+
+  .banner-copy h2 {
+    font-size: 1.08rem;
+  }
+
+  .banner-copy p,
+  .banner-disclosure {
+    font-size: 0.8rem;
+  }
+
+  .banner-frame {
+    min-height: 264px;
+    padding: 12px;
   }
 
   .quick-buttons {
