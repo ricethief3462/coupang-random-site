@@ -340,10 +340,30 @@ h1 {
   overflow-wrap: anywhere;
 }
 
+.price-block {
+  display: grid;
+  gap: 3px;
+  margin-top: 8px;
+}
+
+.price-label {
+  color: #6d7483;
+  font-size: 0.82rem;
+  font-weight: 1000;
+}
+
 .price {
   color: #e44067;
   font-size: 1.55rem;
   font-weight: 1000;
+}
+
+.price-note {
+  margin: 0;
+  color: #7d8491;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.45;
 }
 
 .comment-box {
@@ -661,6 +681,15 @@ h1 {
 
   .price {
     font-size: 1.18rem;
+  }
+
+  .price-block {
+    margin-top: 6px;
+  }
+
+  .price-label,
+  .price-note {
+    font-size: 0.76rem;
   }
 
   .comment-box,
