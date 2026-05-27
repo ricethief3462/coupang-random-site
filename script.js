@@ -21,11 +21,15 @@ const STORAGE_KEYS = {
 // REAL_PRODUCTS: 실제 쿠팡 파트너스 링크 상품 입력 영역
 // - 실제 링크가 있고 isRealAffiliateLink가 true인 상품은 더미 상품보다 우선 추천됩니다.
 // - 심사 전에는 아래 3개 예시 중 하나에 실제 링크를 넣어 버튼 활성 상태를 확인하세요.
+// - 첫 번째 상품의 name은 실제 쿠팡 상품명을 받으면 그대로 교체하세요.
+//   예: name: "브랜드명 상품명 옵션명"
+// - priceText는 확정 판매가가 아니어도 됩니다. 예산 기반 추천이면 "30,000원 이하"처럼
+//   가격대로 적고, 실제 최종 가격은 쿠팡 페이지에서 확인하도록 안내합니다.
 // ============================================================
 const REAL_PRODUCTS = [
   {
     id: 10001,
-    name: "쿠팡 랜덤 추천템",
+    name: "생활 편의 추천 아이템",
     category: "생활템",
     price: 30000,
     priceText: "30,000원 이하",
@@ -263,7 +267,7 @@ function renderProductImage(product) {
     return `<img class="product-img" src="${product.image}" alt="${product.name}">`;
   }
 
-  return `<div class="product-emoji" aria-hidden="true">${product.image}</div>`;
+  return `<div class="product-emoji" aria-hidden="true">${product.image || "🛒"}</div>`;
 }
 
 function renderMiniImage(product, gradient) {
@@ -367,7 +371,11 @@ function renderProduct(product) {
       </div>
       <div>
         <h2 class="product-title">${product.name}</h2>
-        <div class="price">${product.priceText}</div>
+        <div class="price-block">
+          <span class="price-label">추천 가격대</span>
+          <div class="price">${product.priceText}</div>
+          <p class="price-note">가격은 쿠팡 페이지에서 확인해주세요.</p>
+        </div>
       </div>
       <div class="comment-box">💬 ${product.comment}</div>
       <div class="score-row">
